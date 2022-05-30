@@ -11,4 +11,4 @@ cd ./fs/fs || exit
 rm build -rf
 mkdir build && cd build && cmake .. && make
 cd ../tests || exit
-./tests.sh
+./test.sh
