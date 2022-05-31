@@ -7,18 +7,18 @@ struct custom_options {
 	const char*        device;
 };
 
-struct fs_super {
+struct testfs_super {
     uint32_t magic;
     int      fd;
     /* TODO: Define yourself */
 };
 
-struct fs_inode {
+struct testfs_inode {
     uint32_t ino;
     /* TODO: Define yourself */
 };
 
-struct fs_dentry {
+struct testfs_dentry {
     char     name[MAX_NAME_LEN];
     uint32_t ino;
     /* TODO: Define yourself */
