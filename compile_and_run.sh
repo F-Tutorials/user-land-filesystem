@@ -7,7 +7,7 @@
 # ["bash", "./test.sh"],
 # ["E"]
 
-cd ./fs/fs || exit
+cd ./fs/testfs || exit
 rm build -rf
 mkdir build && cd build && cmake .. && make
 cd ../tests || exit
