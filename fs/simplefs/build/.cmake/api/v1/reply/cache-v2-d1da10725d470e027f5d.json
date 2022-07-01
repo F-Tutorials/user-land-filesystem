@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/Programming/user-land-filesystem/fs/simplefs/build"
+			"value" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -447,7 +447,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/Programming/user-land-filesystem/fs/simplefs"
+			"value" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1083,7 +1083,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/Programming/user-land-filesystem/fs/simplefs/build"
+			"value" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build"
 		},
 		{
 			"name" : "sfs-fuse_SOURCE_DIR",
@@ -1095,7 +1095,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/Programming/user-land-filesystem/fs/simplefs"
+			"value" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs"
 		}
 	],
 	"kind" : "cache",

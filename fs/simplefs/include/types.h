@@ -17,7 +17,11 @@ typedef enum sfs_file_type {
 #define TRUE                    1
 #define FALSE                   0
 #define UINT32_BITS             32
+#define UINT32_SHITFS           5
+#define UINT32_MASK             0x1F
 #define UINT8_BITS              8
+#define UINT8_SHIFT             3
+#define UINT8_MASK              0x07
 
 #define SFS_MAGIC_NUM           0x52415453  
 #define SFS_SUPER_OFS           0
@@ -46,6 +50,9 @@ typedef enum sfs_file_type {
 
 #define SFS_FLAG_BUF_DIRTY      0x1
 #define SFS_FLAG_BUF_OCCUPY     0x2
+
+#define SFS_CACHE_BMND_N        64
+#define SFS_CACHE_BMID_N        (SFS_CACHE_BMND_N / UINT8_BITS)                
 /******************************************************************************
 * SECTION: Macro Function
 *******************************************************************************/
@@ -71,6 +78,7 @@ typedef enum sfs_file_type {
 struct sfs_dentry;
 struct sfs_inode;
 struct sfs_super;
+struct sfs_cnode;
 
 struct custom_options {
 	const char*        device;
@@ -117,6 +125,7 @@ struct sfs_super
     struct sfs_dentry* root_dentry;
 };
 
+
 static inline struct sfs_dentry* new_dentry(char * fname, SFS_FILE_TYPE ftype) {
     struct sfs_dentry * dentry = (struct sfs_dentry *)malloc(sizeof(struct sfs_dentry));
     memset(dentry, 0, sizeof(struct sfs_dentry));
@@ -155,6 +164,30 @@ struct sfs_dentry_d
     SFS_FILE_TYPE      ftype;
     int                ino;                           /* 指向的ino号 */
 };  
+/******************************************************************************
+* SECTION: FIFO Cache Structure
+*******************************************************************************/
+struct sfs_bm_node { 
+    int       avai;                                   /* 该位图剩余的记录数 */                 
+    uint8_t   bm_indicators[SFS_CACHE_BMID_N];        /* 元数据位图 */           
+    uint8_t   bm[SFS_CACHE_BMND_N];                   /* 数据位图 */
+};
 
+struct sfs_cnode
+{ 
+    int                ino;
+    int                phys_ofs;
+    int                size;
+    int                flags;
+    unsigned char      *data;
+};
+
+struct sfs_cache
+{
+    int                     sz_blk;                   /* 每个缓存数据块大小 = io_sz */
+    int                     num_blk;                  /* 缓存的数据块数 */  
+    struct sfs_bm_node      *bms;                     /* Cache分配位图 */
+    unsigned char           *buf;                     /* cnode存放区 */
+};
 
 #endif /* _TYPES_H_ */

@@ -29,6 +29,9 @@ int 			   sfs_calc_lvl(const char * path);
 int 			   sfs_driver_read(int offset, uint8_t *out_content, int size);
 int 			   sfs_driver_write(int offset, uint8_t *in_content, int size);
 
+void 			   bm_set(uint8_t *bm, int i);
+void 			   bm_clear(uint8_t *bm, int i);
+int 			   bm_test(uint8_t *bm, int i);
 
 int 			   sfs_mount(struct custom_options options);
 int 			   sfs_umount();
@@ -69,4 +72,13 @@ int   			   sfs_access(const char *, int);
 * SECTION: sfs_debug.c
 *******************************************************************************/
 void 			   sfs_dump_map();
+/******************************************************************************
+* SECTION: sfs_cache.c
+*******************************************************************************/
+struct sfs_cache*  sfs_cache_init(int blks);
+void 			   sfs_cache_destroy();
+void 			   sfs_cache_flush();
+
+int				   sfs_try_cache_read(int offset, uint8_t *out_content, int size);
+int				   sfs_try_cache_write(int offset, uint8_t *in_content, int size);
 #endif

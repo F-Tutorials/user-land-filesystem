@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "sfs-fuse::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-sfs-fuse-Debug-641cdc1aaec937bc8a6b.json",
+					"jsonFile" : "target-sfs-fuse-Debug-1781121a8b39c550f6fd.json",
 					"name" : "sfs-fuse",
 					"projectIndex" : 0
 				}
@@ -48,8 +48,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/Programming/user-land-filesystem/fs/simplefs/build",
-		"source" : "/home/Programming/user-land-filesystem/fs/simplefs"
+		"build" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build",
+		"source" : "/home/Programming/ftoturials/user-land-filesystem/fs/simplefs"
 	},
 	"version" : 
 	{

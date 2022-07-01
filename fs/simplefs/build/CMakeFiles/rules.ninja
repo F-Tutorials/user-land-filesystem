@@ -42,7 +42,7 @@ rule C_EXECUTABLE_LINKER__sfs-fuse_Debug
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/Programming/user-land-filesystem/fs/simplefs -B/home/Programming/user-land-filesystem/fs/simplefs/build
+  command = /usr/bin/cmake --regenerate-during-build -S/home/Programming/ftoturials/user-land-filesystem/fs/simplefs -B/home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build
   description = Re-running CMake...
   generator = 1
 

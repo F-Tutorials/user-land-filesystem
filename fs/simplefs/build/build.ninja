@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/Programming/user-land-filesystem/fs/simplefs/build && /usr/bin/cmake --regenerate-during-build -S/home/Programming/user-land-filesystem/fs/simplefs -B/home/Programming/user-land-filesystem/fs/simplefs/build
+  COMMAND = cd /home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build && /usr/bin/cmake --regenerate-during-build -S/home/Programming/ftoturials/user-land-filesystem/fs/simplefs -B/home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -57,6 +57,13 @@ build cmake_object_order_depends_target_sfs-fuse: phony || CMakeFiles/sfs-fuse.d
 
 build CMakeFiles/sfs-fuse.dir/src/sfs.c.o: C_COMPILER__sfs-fuse_Debug ../src/sfs.c || cmake_object_order_depends_target_sfs-fuse
   DEP_FILE = CMakeFiles/sfs-fuse.dir/src/sfs.c.o.d
+  FLAGS = -D_FILE_OFFSET_BITS=64 -no-pie -g -Wall --pedantic -g
+  INCLUDES = -I.././include
+  OBJECT_DIR = CMakeFiles/sfs-fuse.dir
+  OBJECT_FILE_DIR = CMakeFiles/sfs-fuse.dir/src
+
+build CMakeFiles/sfs-fuse.dir/src/sfs_cache.c.o: C_COMPILER__sfs-fuse_Debug ../src/sfs_cache.c || cmake_object_order_depends_target_sfs-fuse
+  DEP_FILE = CMakeFiles/sfs-fuse.dir/src/sfs_cache.c.o.d
   FLAGS = -D_FILE_OFFSET_BITS=64 -no-pie -g -Wall --pedantic -g
   INCLUDES = -I.././include
   OBJECT_DIR = CMakeFiles/sfs-fuse.dir
@@ -84,7 +91,7 @@ build CMakeFiles/sfs-fuse.dir/src/sfs_utils.c.o: C_COMPILER__sfs-fuse_Debug ../s
 #############################################
 # Link the executable sfs-fuse
 
-build sfs-fuse: C_EXECUTABLE_LINKER__sfs-fuse_Debug CMakeFiles/sfs-fuse.dir/src/sfs.c.o CMakeFiles/sfs-fuse.dir/src/sfs_debug.c.o CMakeFiles/sfs-fuse.dir/src/sfs_utils.c.o | /usr/lib64/libfuse.so /root/lib/libddriver.a
+build sfs-fuse: C_EXECUTABLE_LINKER__sfs-fuse_Debug CMakeFiles/sfs-fuse.dir/src/sfs.c.o CMakeFiles/sfs-fuse.dir/src/sfs_cache.c.o CMakeFiles/sfs-fuse.dir/src/sfs_debug.c.o CMakeFiles/sfs-fuse.dir/src/sfs_utils.c.o | /usr/lib64/libfuse.so /root/lib/libddriver.a
   FLAGS = -D_FILE_OFFSET_BITS=64 -no-pie -g -Wall --pedantic -g
   LINK_FLAGS = -rdynamic
   LINK_LIBRARIES = -lfuse  /root/lib/libddriver.a
@@ -99,7 +106,7 @@ build sfs-fuse: C_EXECUTABLE_LINKER__sfs-fuse_Debug CMakeFiles/sfs-fuse.dir/src/
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/Programming/user-land-filesystem/fs/simplefs/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -114,7 +121,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /home/Programming/user-land-filesystem/fs/simplefs/build
+# Folder: /home/Programming/ftoturials/user-land-filesystem/fs/simplefs/build
 
 build all: phony sfs-fuse
 

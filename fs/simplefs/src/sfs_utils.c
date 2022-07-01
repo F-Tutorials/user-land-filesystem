@@ -1,4 +1,20 @@
 #include "../include/sfs.h"
+
+void bm_set(uint8_t *bm, int i)
+{
+    bm[i >> UINT8_SHIFT] |= (1 << (i & UINT8_MASK));
+}
+
+void bm_clear(uint8_t *bm, int i)
+{
+    bm[i >> UINT8_SHIFT] &= ~(1 << (i & UINT8_MASK));
+}
+
+int bm_test(uint8_t *bm, int i)
+{
+    return bm[i >> UINT8_SHIFT] & (1 << (i & UINT8_MASK));
+}
+
 /**
  * @brief 获取文件名
  * 
