@@ -101,8 +101,8 @@ int ddriver_open(char *path) {
     char device_path[128] = {0};
     char log_path[128] = {0};
 
-    sprintf(device_path, "%sbuild/" DEVICE_NAME, "I:/MyProject/Project.Ftutorial/user-land-filesystem/driver/user_ddriver/");
-    sprintf(log_path, "%sbuild/" DEVICE_LOG, "I:/MyProject/Project.Ftutorial/user-land-filesystem/driver/user_ddriver/");
+    sprintf(device_path, "%sbuild/" DEVICE_NAME, $CURPATH);
+    sprintf(log_path, "%sbuild/" DEVICE_LOG, $CURPATH);
     
     if (strcmp(device_path, path) != 0) {
         user_panic("wrong path [%s], should be [%s]", path, device_path);
