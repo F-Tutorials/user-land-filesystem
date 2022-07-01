@@ -1,14 +1,11 @@
-#include "stdio.h"
+﻿#include <stdio.h>
 #include "stdlib.h"
-#include <unistd.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 #include "string.h"
-#include <linux/fs.h>
 #include "ddriver_ctl.h"
 #include "stdio.h"
-#include "asm-generic/errno-base.h"
-#include <pwd.h>
+#include <windows.h>
 
 #define USER_INFO     "INFO: "
 #define USER_ALERT    "WARNING: "
@@ -103,9 +100,9 @@ int ddriver_open(char *path) {
     int fd, ret = 0;
     char device_path[128] = {0};
     char log_path[128] = {0};
-    
-    sprintf(device_path, "%s/" DEVICE_NAME, getpwuid(getuid())->pw_dir);
-    sprintf(log_path, "%s/" DEVICE_LOG, getpwuid(getuid())->pw_dir);
+
+    sprintf(device_path, "%sbuild/" DEVICE_NAME, "I:/MyProject/Project.Ftutorial/user-land-filesystem/driver/user_ddriver/");
+    sprintf(log_path, "%sbuild/" DEVICE_LOG, "I:/MyProject/Project.Ftutorial/user-land-filesystem/driver/user_ddriver/");
     
     if (strcmp(device_path, path) != 0) {
         user_panic("wrong path [%s], should be [%s]", path, device_path);
@@ -122,7 +119,7 @@ int ddriver_open(char *path) {
         user_panic("can't open device: %d", fd);
         return fd;
     }
-    ret = posix_fallocate(fd, 0, CONFIG_DISK_SZ);
+    ret = ftruncate(fd, CONFIG_DISK_SZ);
     if (ret < 0) {
         user_panic("low space");
         return ret;
@@ -206,7 +203,7 @@ int ddriver_read(int fd, char *buf, size_t size){
  * @param arg 
  * @return int 
  */
-int ddriver_ioctl(int fd, unsigned long cmd, void *arg){
+int ddriver_ioctl(int fd, unsigned int cmd, void *arg){
     struct ddriver_state state;
     switch (cmd)
     {

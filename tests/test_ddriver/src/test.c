@@ -1,11 +1,10 @@
 #include "../include/ddriver.h"
-#include <linux/fs.h>
 
 int main(int argc, char const *argv[])
 {
     int size;
     struct ddriver_state state;
-    int fd = ddriver_open("ddriver");
+    int fd = ddriver_open("I:/MyProject/Project.Ftutorial/user-land-filesystem/driver/user_ddriver/build/ddriver");
     if (fd < 0) {
         return -1;
     }
@@ -20,7 +19,7 @@ int main(int argc, char const *argv[])
     ddriver_seek(fd, 0, SEEK_SET);
     ddriver_read(fd, rbuffer, 512);
     printf("%s\n", rbuffer);
-
+    
     /* Cycle 2: ioctl test - return int */
     ddriver_ioctl(fd, IOC_REQ_DEVICE_SIZE, &size);
     printf("%d\n", size);

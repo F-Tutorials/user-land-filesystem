@@ -1,11 +1,11 @@
 #ifndef _DDRIVER_CTL_H_ 
 #define _DDRIVER_CTL_H_
 
-#include <sys/ioctl.h>   
+#include <win_compat.h>   
 /******************************************************************************
 * SECTION: IO ctl protocol definitions
 *******************************************************************************/
-#define IOC_MAGIC               'A'
+
 struct ddriver_state
 {
     int write_cnt;
@@ -13,9 +13,9 @@ struct ddriver_state
     int seek_cnt;
 };
 
-#define IOC_REQ_DEVICE_SIZE     _IOR(IOC_MAGIC, 0, int)
-#define IOC_REQ_DEVICE_STATE    _IOR(IOC_MAGIC, 1, struct ddriver_state)
-#define IOC_REQ_DEVICE_RESET    _IO(IOC_MAGIC, 2)
-#define IOC_REQ_DEVICE_IO_SZ    _IOR(IOC_MAGIC, 3, int)
+#define IOC_REQ_DEVICE_SIZE     0
+#define IOC_REQ_DEVICE_STATE    1
+#define IOC_REQ_DEVICE_RESET    2
+#define IOC_REQ_DEVICE_IO_SZ    3
 
 #endif

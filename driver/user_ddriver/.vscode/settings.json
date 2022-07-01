@@ -6,6 +6,11 @@
         "stdlib.h": "c",
         "ddriver.h": "c",
         "string.h": "c",
-        "errno-base.h": "c"
+        "errno-base.h": "c",
+        "stdio.h": "c",
+        "ddriver_ctl.h": "c",
+        "io.h": "c",
+        "fcntl.h": "c",
+        "win_compat.h": "c"
     }
 }
