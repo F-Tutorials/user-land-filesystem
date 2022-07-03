@@ -59,6 +59,7 @@ typedef enum sfs_file_type {
 #define SFS_IO_SZ()                     (sfs_super.sz_io)
 #define SFS_DISK_SZ()                   (sfs_super.sz_disk)
 #define SFS_DRIVER()                    (sfs_super.driver_fd)
+#define SFS_CACHE()                     (sfs_super.cache)
 
 #define SFS_ROUND_DOWN(value, round)    (value % round == 0 ? value : (value / round) * round)
 #define SFS_ROUND_UP(value, round)      (value % round == 0 ? value : (value / round + 1) * round)
@@ -79,9 +80,11 @@ struct sfs_dentry;
 struct sfs_inode;
 struct sfs_super;
 struct sfs_cnode;
+struct sfs_cache;
 
 struct custom_options {
 	const char*        device;
+    int                cache_blks;
 	boolean            show_help;
 };
 
@@ -123,6 +126,7 @@ struct sfs_super
     boolean            is_mounted;
 
     struct sfs_dentry* root_dentry;
+    struct sfs_cache*  cache;
 };
 
 
@@ -173,13 +177,16 @@ struct sfs_bm_node {
     uint8_t   bm[SFS_CACHE_BMND_N];                   /* 数据位图 */
 };
 
-struct sfs_cnode
-{ 
-    int                ino;
+struct __attribute__((packed)) sfs_cnode_hdr
+{
     int                phys_ofs;
-    int                size;
     int                flags;
-    unsigned char      *data;
+};
+
+struct __attribute__((packed)) sfs_cnode
+{ 
+    struct sfs_cnode_hdr hdr;
+    unsigned char        data[];
 };
 
 struct sfs_cache
@@ -187,7 +194,14 @@ struct sfs_cache
     int                     sz_blk;                   /* 每个缓存数据块大小 = io_sz */
     int                     num_blk;                  /* 缓存的数据块数 */  
     struct sfs_bm_node      *bms;                     /* Cache分配位图 */
-    unsigned char           *buf;                     /* cnode存放区 */
+    int                     num_bms;
+    int                     last_evicted;             /* 上一次驱逐块 */
+    unsigned char           *buf;                     /* Cnode存放区 */
+
+    int                     cache_hit;
+    int                     cache_miss;
+    int                     cache_wb;
+    int                     cache_ld;
 };
 
 #endif /* _TYPES_H_ */

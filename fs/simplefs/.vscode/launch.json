@@ -31,7 +31,7 @@
             "args": [
                 "--device=${env:HOME}/ddriver",
                 "-f",
-                "-d",
+                // "-d",
                 "-s",
                 "${workspaceFolder}/tests/mnt"
             ],

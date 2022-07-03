@@ -64,13 +64,15 @@ int sfs_driver_read(int offset, uint8_t *out_content, int size) {
     uint8_t* temp_content   = (uint8_t*)malloc(size_aligned);
     uint8_t* cur            = temp_content;
     // lseek(SFS_DRIVER(), offset_aligned, SEEK_SET);
-    ddriver_seek(SFS_DRIVER(), offset_aligned, SEEK_SET);
+    // ddriver_seek(SFS_DRIVER(), offset_aligned, SEEK_SET);
     while (size_aligned != 0)
     {
         // read(SFS_DRIVER(), cur, SFS_IO_SZ());
-        ddriver_read(SFS_DRIVER(), cur, SFS_IO_SZ());
+        // ddriver_read(SFS_DRIVER(), cur, SFS_IO_SZ());
+        sfs_try_cache_read(SFS_CACHE(), offset_aligned, cur, SFS_IO_SZ());
         cur          += SFS_IO_SZ();
         size_aligned -= SFS_IO_SZ();   
+        offset_aligned += SFS_IO_SZ();
     }
     memcpy(out_content, temp_content + bias, size);
     free(temp_content);
@@ -94,13 +96,14 @@ int sfs_driver_write(int offset, uint8_t *in_content, int size) {
     memcpy(temp_content + bias, in_content, size);
     
     // lseek(SFS_DRIVER(), offset_aligned, SEEK_SET);
-    ddriver_seek(SFS_DRIVER(), offset_aligned, SEEK_SET);
+    // ddriver_seek(SFS_DRIVER(), offset_aligned, SEEK_SET);
     while (size_aligned != 0)
     {
         // write(SFS_DRIVER(), cur, SFS_IO_SZ());
-        ddriver_write(SFS_DRIVER(), cur, SFS_IO_SZ());
+        sfs_try_cache_write(SFS_CACHE(), offset_aligned, cur, SFS_IO_SZ());
         cur          += SFS_IO_SZ();
         size_aligned -= SFS_IO_SZ();   
+        offset_aligned += SFS_IO_SZ();
     }
 
     free(temp_content);
@@ -203,7 +206,8 @@ struct sfs_inode* sfs_alloc_inode(struct sfs_dentry * dentry) {
     inode->dentrys = NULL;
     
     if (SFS_IS_REG(inode)) {
-        inode->data = (uint8_t *)malloc(SFS_BLKS_SZ(SFS_DATA_PER_FILE));
+        // inode->data = (uint8_t *)malloc(SFS_BLKS_SZ(SFS_DATA_PER_FILE));
+        inode->data = NULL;
     }
 
     return inode;
@@ -254,12 +258,12 @@ int sfs_sync_inode(struct sfs_inode * inode) {
             offset += sizeof(struct sfs_dentry_d);
         }
     }
-    else if (SFS_IS_REG(inode)) {
-        if (sfs_driver_write(SFS_DATA_OFS(ino), inode->data, 
-                             SFS_BLKS_SZ(SFS_DATA_PER_FILE)) != SFS_ERROR_NONE) {
-            SFS_DBG("[%s] io error\n", __func__);
-            return -SFS_ERROR_IO;
-        }
+    else if (SFS_IS_REG(inode)) {                     /* 最后Flush Cache中的Data */
+        // if (sfs_driver_write(SFS_DATA_OFS(ino), inode->data, 
+        //                      SFS_BLKS_SZ(SFS_DATA_PER_FILE)) != SFS_ERROR_NONE) {
+        //     SFS_DBG("[%s] io error\n", __func__);
+        //     return -SFS_ERROR_IO;
+        // }
     }
     return SFS_ERROR_NONE;
 }
@@ -380,12 +384,12 @@ struct sfs_inode* sfs_read_inode(struct sfs_dentry * dentry, int ino) {
         }
     }
     else if (SFS_IS_REG(inode)) {
-        inode->data = (uint8_t *)malloc(SFS_BLKS_SZ(SFS_DATA_PER_FILE));
-        if (sfs_driver_read(SFS_DATA_OFS(ino), (uint8_t *)inode->data, 
-                            SFS_BLKS_SZ(SFS_DATA_PER_FILE)) != SFS_ERROR_NONE) {
-            SFS_DBG("[%s] io error\n", __func__);
-            return NULL;                    
-        }
+        // inode->data = (uint8_t *)malloc(SFS_BLKS_SZ(SFS_DATA_PER_FILE));
+        // if (sfs_driver_read(SFS_DATA_OFS(ino), (uint8_t *)inode->data, 
+        //                     SFS_BLKS_SZ(SFS_DATA_PER_FILE)) != SFS_ERROR_NONE) {
+        //     SFS_DBG("[%s] io error\n", __func__);
+        //     return NULL;                    
+        // }
     }
     return inode;
 }
@@ -529,6 +533,8 @@ int sfs_mount(struct custom_options options){
     ddriver_ioctl(SFS_DRIVER(), IOC_REQ_DEVICE_SIZE,  &sfs_super.sz_disk);
     ddriver_ioctl(SFS_DRIVER(), IOC_REQ_DEVICE_IO_SZ, &sfs_super.sz_io);
     
+    sfs_super.cache = sfs_cache_init(sfs_super.sz_io, options.cache_blks);
+
     root_dentry = new_dentry("/", SFS_DIR);
 
     if (sfs_driver_read(SFS_SUPER_OFS, (uint8_t *)(&sfs_super_d), 
@@ -610,7 +616,14 @@ int sfs_umount() {
     }
 
     free(sfs_super.map_inode);
-    ddriver_close(SFS_DRIVER());
 
+    sfs_cache_flush(SFS_CACHE());                     /* Flush所有缓存数据 */
+
+    ddriver_close(SFS_DRIVER());
+    
+    sfs_cache_report(SFS_CACHE());
+
+    sfs_cache_destroy(SFS_CACHE());
+    
     return SFS_ERROR_NONE;
 }

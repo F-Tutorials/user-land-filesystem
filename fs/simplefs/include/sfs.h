@@ -75,10 +75,10 @@ void 			   sfs_dump_map();
 /******************************************************************************
 * SECTION: sfs_cache.c
 *******************************************************************************/
-struct sfs_cache*  sfs_cache_init(int blks);
-void 			   sfs_cache_destroy();
-void 			   sfs_cache_flush();
+struct sfs_cache*  sfs_cache_init(int io_sz, int blks);
+void 			   sfs_cache_destroy(struct sfs_cache *cache);
+void 			   sfs_cache_flush(struct sfs_cache *cache);
 
-int				   sfs_try_cache_read(int offset, uint8_t *out_content, int size);
-int				   sfs_try_cache_write(int offset, uint8_t *in_content, int size);
+int				   sfs_try_cache_read(struct sfs_cache *cache, int offset, uint8_t *out_content, int size);
+int				   sfs_try_cache_write(struct sfs_cache *cache, int offset, uint8_t *in_content, int size);
 #endif

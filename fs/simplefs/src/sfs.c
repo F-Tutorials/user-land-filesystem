@@ -11,6 +11,7 @@ static const struct fuse_opt option_spec[] = {
 	OPTION("--device=%s", device),
 	OPTION("-h", show_help),
 	OPTION("--help", show_help),
+	OPTION("--cache-blks=%d", cache_blks),
 	FUSE_OPT_END
 };
 
@@ -206,7 +207,7 @@ int sfs_write(const char* path, const char* buf, size_t size, off_t offset,
     boolean	is_find, is_root;
 	struct sfs_dentry* dentry = sfs_lookup(path, &is_find, &is_root);
 	struct sfs_inode*  inode;
-	
+
 	if (is_find == FALSE) {
 		return -SFS_ERROR_NOTFOUND;
 	}
@@ -221,7 +222,8 @@ int sfs_write(const char* path, const char* buf, size_t size, off_t offset,
 		return -SFS_ERROR_SEEK;
 	}
 
-	memcpy(inode->data + offset, buf, size);
+	// memcpy(inode->data + offset, buf, size);
+	sfs_driver_write(SFS_DATA_OFS((inode->ino)) + offset, buf, size);
 	inode->size = offset + size > inode->size ? offset + size : inode->size;
 	
 	return size;
@@ -256,8 +258,8 @@ int sfs_read(const char* path, char* buf, size_t size, off_t offset,
 		return -SFS_ERROR_SEEK;
 	}
 
-	memcpy(buf, inode->data + offset, size);
-
+	// memcpy(buf, inode->data + offset, size);
+	sfs_driver_read(SFS_DATA_OFS((inode->ino)) + offset, buf, size);
 	return size;			   
 }
 /**
@@ -452,7 +454,8 @@ int main(int argc, char **argv)
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 
 	sfs_options.device = strdup("/dev/ddriver");
-
+	sfs_options.cache_blks = 512;
+	
 	if (fuse_opt_parse(&args, &sfs_options, option_spec, NULL) == -1)
 		return -SFS_ERROR_INVAL;
 	
