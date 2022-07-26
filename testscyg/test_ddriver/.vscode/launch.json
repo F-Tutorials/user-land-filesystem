@@ -2,25 +2,18 @@
     // 使用 IntelliSense 了解相关属性。 
     // 悬停以查看现有属性的描述。
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    //.\sfs-cygwin.exe m --device=E:/user-land-filesystem/driver/user_ddriver/build/ddriver -f -d -s
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug SFS",
+            "name": "gcc - 生成和调试活动文件",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/sfs-cygwin.exe",
-            "args": [
-                "m",
-                "--device=E:/user-land-filesystem/driver/user_ddriver/build/ddriver",//挂载路径
-                "-f",
-                "-d",
-                "-s"
-            ],
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -29,8 +22,8 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "编译SFS",
-            "miDebuggerPath": "C:\\cygwin64\\bin\\gdb.exe"//调试器路径
+            "preLaunchTask": "C/C++: gcc 生成活动文件",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }

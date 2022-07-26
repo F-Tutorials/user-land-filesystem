@@ -2,7 +2,7 @@
 
 ## 前言
 
-文件系统VFS涉及内核开发，但是内核调试却是一个不小的工作。为此，FUSE (Filesystem in User SpacE) 应运而生。FUSE支持用户态文件系统开发，给文件系统开发者带来福音。本次实验目标为基于FUSE开发一个青春版EXT2文件系统
+文件系统VFS涉及内核开发，但是内核调试却是一个不小的工作。为此，FUSE (Filesystem in User SpacE) 应运而生。FUSE支持用户态文件系统开发，给文件系统开发者带来福音。本次实验目标为基于FUSE开发一个青春版EXT2文件系统,此分支为Windows移植版本。
 
 ## 参考资料
 
@@ -13,15 +13,15 @@
 ## 环境配置
 
 **实验环境**
-- Ubuntu 20.04
+- Windows 10
 - VSCode 1.60.2
 - cmake  3.16.3
 - gcc    9.3.0
 - gdb    9.2
 
 **必要依赖** 
-```shell
-sudo apt-get install make cmake fuse libfuse-dev
+```
+cygwin编译器
 ```
 
 **推荐的相关插件**
@@ -41,15 +41,21 @@ sudo apt-get install make cmake fuse libfuse-dev
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gcc - 生成和调试活动文件",
+            "name": "Debug SFS",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/sfs-fuse",
-            "args": [],
+            "program": "${workspaceFolder}/sfs-cygwin.exe",
+            "args": [
+                "m",
+                "--device=E:/user-land-filesystem/driver/user_ddriver/build/ddriver",//挂载路径
+                "-f",
+                "-d",
+                "-s"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -58,8 +64,8 @@ sudo apt-get install make cmake fuse libfuse-dev
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: gcc 生成活动文件",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "preLaunchTask": "编译SFS",
+            "miDebuggerPath": "C:\\cygwin64\\bin\\gdb.exe"//调试器路径
         }
     ]
 }
@@ -70,12 +76,21 @@ sudo apt-get install make cmake fuse libfuse-dev
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: gcc 生成活动文件",
-            "command": "ninja",                 // 如果是make的话，那就填make就行
+            "label": "编译SFS",
+            "command": "gcc",
             "args": [
+                "-o",
+                "sfs-cygwin",
+                "-D_FILE_OFFSET_BITS=64",
+                "-I./include",
+                "./src/sfs.c",
+                "./src/sfs_utils.c", 
+                "./src/ddrivercyg.c",
+                "-g",
+                "cygdokanfuse2.dll"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/"
             },
             "problemMatcher": [
                 "$gcc"
@@ -115,17 +130,12 @@ target_link_libraries(sfs-fuse ${FUSE_LIBRARIES})
 ### 挂载与卸载
 **挂载**
 ```shell
-./sfs-fuse --device=/dev/ddriver -f -d -s ./tests/mnt
+./sfs-cygwin.exe m --device=E:/user-land-filesystem/driver/user_ddriver/build/ddriver -f -d -s
 ```
-如果将上面的命令翻译为VFS类型，则应该等价于
-```shell
-mount -t sys-fuse /dev/ddriver ./tests/mnt
-```
-不过遗憾的是，下面这种类型Linux的mount不支持
 
 **卸载**
-```shell
-fusermount -u ./tests/mnt
+```
+在任务管理器终止进程
 ```
 
 ## 附录 （SFS实现的操作）

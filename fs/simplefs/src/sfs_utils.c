@@ -455,7 +455,7 @@ struct sfs_dentry* sfs_lookup(const char * path, boolean* is_find, boolean* is_r
             
             if (!is_hit) {
                 *is_find = FALSE;
-                SFS_DBG("[%s] not found %s\n", __func__, fname);
+                // SFS_DBG("[%s] not found %s\n", __func__, fname);
                 dentry_ret = inode->dentry;
                 break;
             }
@@ -472,7 +472,6 @@ struct sfs_dentry* sfs_lookup(const char * path, boolean* is_find, boolean* is_r
     if (dentry_ret->inode == NULL) {
         dentry_ret->inode = sfs_read_inode(dentry_ret, dentry_ret->ino);
     }
-    
     return dentry_ret;
 }
 /**
@@ -512,7 +511,6 @@ int sfs_mount(struct custom_options options){
     sfs_super.driver_fd = driver_fd;
     ddriver_ioctl(SFS_DRIVER(), IOC_REQ_DEVICE_SIZE,  &sfs_super.sz_disk);
     ddriver_ioctl(SFS_DRIVER(), IOC_REQ_DEVICE_IO_SZ, &sfs_super.sz_io);
-    
     root_dentry = new_dentry("/", SFS_DIR);
 
     if (sfs_driver_read(SFS_SUPER_OFS, (uint8_t *)(&sfs_super_d), 
@@ -560,7 +558,7 @@ int sfs_mount(struct custom_options options){
     sfs_super.root_dentry = root_dentry;
     sfs_super.is_mounted  = TRUE;
 
-    sfs_dump_map();
+    // sfs_dump_map();
     return ret;
 }
 /**

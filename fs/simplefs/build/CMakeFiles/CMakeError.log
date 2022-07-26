@@ -1,0 +1,48 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: E:/dokan/simplefs/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):D:/gcc/bin/mingw32-make.exe -f Makefile cmTC_60d0d/fast && D:/gcc/bin/mingw32-make.exe  -f CMakeFiles\cmTC_60d0d.dir\build.make CMakeFiles/cmTC_60d0d.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/dokan/simplefs/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_60d0d.dir/CMakeCCompilerABI.c.obj
+C:\cygwin64\bin\gcc.exe   -v -o CMakeFiles\cmTC_60d0d.dir\CMakeCCompilerABI.c.obj -c D:\cmake\share\cmake-3.23\Modules\CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/usr/bin/gcc
+Target: x86_64-pc-cygwin
+Configured with: /mnt/share/cygpkgs/gcc/gcc.x86_64/src/gcc-11.3.0/configure --srcdir=/mnt/share/cygpkgs/gcc/gcc.x86_64/src/gcc-11.3.0 --prefix=/usr --exec-prefix=/usr --localstatedir=/var --sysconfdir=/etc --docdir=/usr/share/doc/gcc --htmldir=/usr/share/doc/gcc/html -C --build=x86_64-pc-cygwin --host=x86_64-pc-cygwin --target=x86_64-pc-cygwin --without-libiconv-prefix --without-libintl-prefix --libexecdir=/usr/lib --with-gcc-major-version-only --enable-shared --enable-shared-libgcc --enable-static --enable-version-specific-runtime-libs --enable-bootstrap --enable-__cxa_atexit --with-dwarf2 --with-tune=generic --enable-languages=c,c++,fortran,lto,objc,obj-c++,jit --enable-graphite --enable-threads=posix --enable-libatomic --enable-libgomp --enable-libquadmath --enable-libquadmath-support --disable-libssp --enable-libada --disable-symvers --with-gnu-ld --with-gnu-as --with-cloog-include=/usr/include/cloog-isl --without-libiconv-prefix --without-libintl-prefix --with-system-zlib --enable-linker-build-id --with-default-libstdcxx-abi=gcc4-compatible --enable-libstdcxx-filesystem-ts
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 11.3.0 (GCC) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\cmTC_60d0d.dir\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-pc-cygwin/11/cc1.exe -quiet -v -idirafter /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../lib/../include/w32api -idirafter /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/lib/../lib/../../include/w32api D:\cmake\share\cmake-3.23\Modules\CMakeCCompilerABI.c -quiet -dumpbase CMakeFiles\cmTC_60d0d.dir\CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /cygdrive/c/Users/ADMINI~1/AppData/Local/Temp/ccOUtDHo.s
+GNU C17 (GCC) version 11.3.0 (x86_64-pc-cygwin)
+	compiled by GNU C version 11.3.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/usr/local/include"
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-cygwin/11/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/include"
+ignoring duplicate directory "/usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/lib/../lib/../../include/w32api"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-pc-cygwin/11/include
+ /usr/include
+ /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../lib/../include/w32api
+End of search list.
+GNU C17 (GCC) version 11.3.0 (x86_64-pc-cygwin)
+	compiled by GNU C version 11.3.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: e610203cc0750d34e6eff5a7387a08f9
+D:\cmake\share\cmake-3.23\Modules\CMakeCCompilerABI.c:9:10: fatal error: CMakeCompilerABI.h: No such file or directory
+    9 | #include "CMakeCompilerABI.h"
+      |          ^~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles\cmTC_60d0d.dir\build.make:76: recipe for target 'CMakeFiles/cmTC_60d0d.dir/CMakeCCompilerABI.c.obj' failed
+mingw32-make.exe[1]: *** [CMakeFiles/cmTC_60d0d.dir/CMakeCCompilerABI.c.obj] Error 1
+mingw32-make.exe[1]: Leaving directory 'E:/dokan/simplefs/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_60d0d/fast' failed
+mingw32-make.exe: *** [cmTC_60d0d/fast] Error 2
+
+
+
+

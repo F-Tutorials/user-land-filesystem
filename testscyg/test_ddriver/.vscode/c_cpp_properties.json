@@ -3,12 +3,14 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${default}",
+                "${workspaceRoot}/**"
             ],
-            "defines": [],
-            "compilerPath": "C:\\cygwin64\\bin\\gcc.exe",//编译器的位置
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
             "intelliSenseMode": "linux-gcc-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],

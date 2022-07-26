@@ -3,7 +3,15 @@
 * SECTION: Macro
 *******************************************************************************/
 #define OPTION(t, p)        { t, offsetof(struct custom_options, p), 1 }
-
+#define WIN_S_IFDIR			S_IFDIR
+#define WIN_S_ISDIR(mode)	S_ISDIR(mode)
+#define WIN_S_IFREG			(511)			
+#define WIN_S_ISREG(mode)	(mode == WIN_S_IFREG)							
+/******************************************************************************
+* SECTION: Global Var
+*******************************************************************************/
+struct sfs_super      sfs_super;
+struct custom_options sfs_options;
 /******************************************************************************
 * SECTION: Global Static Var
 *******************************************************************************/
@@ -37,6 +45,7 @@ static struct fuse_operations operations = {
 * SECTION: Function Implementation
 *******************************************************************************/
 void* sfs_init(struct fuse_conn_info * conn_info) {
+	printf("%s called\n", __func__);
 	if (sfs_mount(sfs_options) != SFS_ERROR_NONE) {
         SFS_DBG("[%s] mount error\n", __func__);
 		fuse_exit(fuse_get_context()->fuse);
@@ -99,11 +108,11 @@ int sfs_getattr(const char* path, struct stat * sfs_stat) {
 	}
 
 	if (SFS_IS_DIR(dentry->inode)) {
-		sfs_stat->st_mode = S_IFDIR | SFS_DEFAULT_PERM;
+		sfs_stat->st_mode = WIN_S_IFDIR | SFS_DEFAULT_PERM;
 		sfs_stat->st_size = dentry->inode->dir_cnt * sizeof(struct sfs_dentry_d);
 	}
 	else if (SFS_IS_REG(dentry->inode)) {
-		sfs_stat->st_mode = S_IFREG | SFS_DEFAULT_PERM;
+		sfs_stat->st_mode = WIN_S_IFREG | SFS_DEFAULT_PERM;
 		sfs_stat->st_size = dentry->inode->size;
 	}
 
@@ -113,7 +122,6 @@ int sfs_getattr(const char* path, struct stat * sfs_stat) {
 	sfs_stat->st_atime   = time(NULL);
 	sfs_stat->st_mtime   = time(NULL);
 	sfs_stat->st_blksize = SFS_IO_SZ();
-
 	if (is_root) {
 		sfs_stat->st_size	= sfs_super.sz_usage; 
 		sfs_stat->st_blocks = SFS_DISK_SZ() / SFS_IO_SZ();
@@ -167,7 +175,6 @@ int sfs_readdir(const char * path, void * buf, fuse_fill_dir_t filler, off_t off
  */
 int sfs_mknod(const char* path, mode_t mode, dev_t dev) {
 	boolean	is_find, is_root;
-	
 	struct sfs_dentry* last_dentry = sfs_lookup(path, &is_find, &is_root);
 	struct sfs_dentry* dentry;
 	struct sfs_inode* inode;
@@ -176,13 +183,13 @@ int sfs_mknod(const char* path, mode_t mode, dev_t dev) {
 	if (is_find == TRUE) {
 		return -SFS_ERROR_EXISTS;
 	}
-
+	
 	fname = sfs_get_fname(path);
 	
-	if (S_ISREG(mode)) {
+	if (WIN_S_ISREG(mode)) {
 		dentry = new_dentry(fname, SFS_REG_FILE);
 	}
-	else if (S_ISDIR(mode)) {
+	else if (WIN_S_ISDIR(mode)) {
 		dentry = new_dentry(fname, SFS_DIR);
 	}
 	dentry->parent = last_dentry;
@@ -317,10 +324,10 @@ int sfs_rename(const char* from, const char* to) {
 	from_inode = from_dentry->inode;
 	
 	if (SFS_IS_DIR(from_inode)) {
-		mode = S_IFDIR;
+		mode = WIN_S_IFDIR;
 	}
 	else if (SFS_IS_REG(from_inode)) {
-		mode = S_IFREG;
+		mode = WIN_S_IFREG;
 	}
 	
 	ret = sfs_mknod(to, mode, NULL);
@@ -455,13 +462,12 @@ int main(int argc, char **argv)
 
 	if (fuse_opt_parse(&args, &sfs_options, option_spec, NULL) == -1)
 		return -SFS_ERROR_INVAL;
-	
+
 	if (sfs_options.show_help) {
 		sfs_usage();
 		fuse_opt_add_arg(&args, "--help");
 		args.argv[0][0] = '\0';
 	}
-	
 	ret = fuse_main(args.argc, args.argv, &operations, NULL);
 	fuse_opt_free_args(&args);
 	return ret;

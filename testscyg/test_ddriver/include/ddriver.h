@@ -1,7 +1,7 @@
 #ifndef _DDRIVER_H_
 #define _DDRIVER_H_
 
-#include "ddriver_ctl_cyg.h"
+#include "ddriver_ctl_user.h"
 #include "stdio.h"
 
 int ddriver_open(char *path);
