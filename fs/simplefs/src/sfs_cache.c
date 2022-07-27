@@ -96,7 +96,7 @@ int sfs_cache_hit_or_alloc_blk(struct sfs_cache *cache, int phys_ofs) {
         bm_node = &cache->bms[bm_id];
         if (bm_node->avai != SFS_CACHE_BMND_N * UINT8_BITS) {
             for (line = 0; line < bm_lines; line++) { 
-                if (bm_test(bm_node->bm, line)) {
+                if (bm_test(bm_node->bm_indicators, line)) {
                     blk = bm_id * SFS_CACHE_BMND_N * UINT8_BITS + line * UINT8_BITS;
                     for (i = 0; i < UINT8_BITS; i++) {
                         if (bm_test(bm_node->bm, blk + i)) {
