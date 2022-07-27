@@ -81,4 +81,5 @@ void 			   sfs_cache_flush(struct sfs_cache *cache);
 
 int				   sfs_try_cache_read(struct sfs_cache *cache, int offset, uint8_t *out_content, int size);
 int				   sfs_try_cache_write(struct sfs_cache *cache, int offset, uint8_t *in_content, int size);
+int 			   sfs_cache_report(struct sfs_cache *cache);
 #endif

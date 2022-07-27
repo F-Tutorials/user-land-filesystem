@@ -36,6 +36,7 @@ def process(loop, cblks):
     os.system('umount {}'.format(mnt_point))
     end = time.time()
     print('Time: {}ms BW: {}MB/s'.format(1000 * (end - start), tot_sz / 1024 / 1024 / (end - start)))
+
 """ 
 loop = 2
 process(loop)
@@ -131,6 +132,6 @@ Cache ld: 21
 
 loop = 1000000
 print("Cache Blks: 512")
-process(loop, 512) # => 48MB/s
+process(loop, 512) # => 101.79038122398883MB/s
 print("Cache Blks: 0")
-process(loop, 0)   # => 30MB/s
+process(loop, 0)   # => 84.38797875936444MB/s
