@@ -13,9 +13,11 @@ The repository is mainly for course project, aiming at file system teaching proc
 
 # 一个 GitHub Classroom 的Assignment样例
 
-[样例Assignment邀请链接](https://classroom.github.com/a/2boEflco)
+本节以样例Assignment为例，同学可以基于此Assignment直接完成本实验。
 
-在线排行榜：[Grading (f-tutorials.github.io)](https://f-tutorials.github.io/classroom-grading/)
+1. 通过点击[样例Assignment邀请链接](https://classroom.github.com/a/2boEflco)对模板进行`fork`操作，而后在自己`fork`出的仓库内完成实验。
+2. 完成实验后，`git commit & push`至远端仓库即可完成提交
+3. 提交完成后可在在线排行榜：[Grading (f-tutorials.github.io)](https://f-tutorials.github.io/classroom-grading/)中看到自己的成绩及排行榜。
 
 # Usage of this github classroom template
 
